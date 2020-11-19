@@ -4,9 +4,9 @@ let searchParams = {
   currentPage: 0,
 };
 
-const get30DaysAgoDateString = () => {
-  const today = new Date();
-  const date30DaysAgo = new Date(new Date().setDate(today.getDate() - 30));
+export const get30DaysAgoDateString = (date) => {
+  const timeOf30days = 30*24*60*60*1000;
+  const date30DaysAgo = new Date(date.getTime() - timeOf30days);
 
   return [
     date30DaysAgo.getFullYear(),
@@ -15,12 +15,12 @@ const get30DaysAgoDateString = () => {
   ].join('-');
 };
 
-const getEndpoint = (params) => {
+export const getEndpoint = (params) => {
   searchParams = { ...searchParams, ...params };
 
   const baseEndpoint = 'https://content.guardianapis.com/search';
   const apiKey = '7d012150-1ab0-4ab9-9a3f-1415916c4817';
-  const queryParamsArray = [`?from-date=${get30DaysAgoDateString()}`];
+  const queryParamsArray = [`?from-date=${get30DaysAgoDateString(new Date())}`];
 
   if (searchParams.phrase) {
     queryParamsArray.push(`q=${encodeURI(searchParams.phrase)}`);
