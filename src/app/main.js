@@ -25,7 +25,7 @@ window.saveArticle = (article) =>
 window.removeArticle = (id) =>
   renderSavedArticles(removeSavedArticle(id), savedArticles);
 
-const searchHandler = async (params) => {
+const searchHandler = async (params, onlyPageChange) => {
   const { error, response } = await fetchNewsList(params);
 
   if (error) {
@@ -35,7 +35,7 @@ const searchHandler = async (params) => {
 
   renderNewsList(response.results, newsList);
 
-  if (params.currentPage) {
+  if (onlyPageChange) {
     saveSearchParams(params);
     return;
   }
@@ -51,7 +51,7 @@ sectionSelect.addEventListener('change', ({ target }) =>
   searchHandler({ section: target.value })
 );
 activePageSelect.addEventListener('change', ({ target }) =>
-  searchHandler({ currentPage: target.value })
+  searchHandler({ currentPage: target.value }, true)
 );
 
 const initializeApp = async () => {
